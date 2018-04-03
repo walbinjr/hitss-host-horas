@@ -3,7 +3,8 @@ document.querySelectorAll('a').forEach(function(el) { if (el.innerText === "1") 
 firstDay.click();
 
 var diasInvalidos = [];
-document.querySelectorAll('.diaInhabil').forEach(function(el) { diasInvalidos.push(el.text); });
+document.querySelectorAll('.diaInhabil').forEach(function(el) { diasInvalidos.push(parseInt(el.text)); });
+// console.log('diasInvalidos', diasInvalidos);
 
 window.parseCurrentDate = function() {
   return document.querySelector('#lblFechaCaptura').innerHTML.split(/\s/);
@@ -12,48 +13,42 @@ window.parseCurrentDate = function() {
 window.jumpToNextDay = function() {
   if(document.querySelector('#btnDiaSiguiente').style.display === '') {
     document.querySelector('#btnDiaSiguiente').click();
+    window.setHour();
   }
 };
 
-window.setHostMind = function() {
+window.isValidDay = function() {
+  var rg = window.parseCurrentDate();
+  var dayOfMonth = parseInt(rg[1]);
+  console.log('currentDate', rg);
+  // console.log('dayOfMonth', dayOfMonth);
+  var validDay = diasInvalidos.indexOf(dayOfMonth) == -1;
+  return validDay;
+};
 
-  document.querySelector('#HorasCapturadas').value = window.localStorage.time;
-  document.querySelector('#cmbActividades').value = window.localStorage.activity;
-  document.querySelector('#Comentario').value = window.localStorage.comment;
-  document.querySelector('#btnOk').click();
+window.setHour = function() {
+  if(window.isValidDay()) {
+    document.querySelector('#HorasCapturadas').value = window.localStorage.time;
+    document.querySelector('#cmbActividades').value = window.localStorage.activity;
+    document.querySelector('#Comentario').value = window.localStorage.comment;
+    document.querySelector('#btnOk').click();
+  }
 
+  window.startValidator();
+};
+
+window.startValidator = function() {
   var iterations = 0;
   var waiting = window.setInterval(function() {
     iterations++;
 
     var hasActivities = document.querySelector('#divActividadesCapturaActividades').querySelectorAll('tr.total').length > 0;
-    console.log('hasActivities', hasActivities);
+    // console.log('hasActivities', hasActivities);
+    // console.log('validDay', window.isValidDay());
 
-    if (hasActivities) {
+    if (hasActivities || !window.isValidDay()) {
       clearInterval(waiting);
-
-      console.log('Selected date', document.querySelector('#lblFechaCaptura').innerHTML);
-      var rg = window.parseCurrentDate();
-      var isFriday = !!rg[0] && rg[0] === 'Sex';
-
       window.jumpToNextDay();
-
-      if (!!isFriday) {
-        window.jumpToNextDay();
-        window.jumpToNextDay();
-      }
-
-      rg = window.parseCurrentDate();
-      dayOfMonth = rg[1];
-      if(diasInvalidos.indexOf(dayOfMonth) != -1) {
-        console.log('Jump invalid day', dayOfMonth);
-        window.jumpToNextDay();
-      }
-
-      if(document.querySelector('#btnDiaSiguiente').style.display === '') {
-        window.setHostMind();
-      }
-
     }
 
     if(iterations >= 70) {
@@ -63,4 +58,4 @@ window.setHostMind = function() {
   }, 1000);
 };
 
-window.setHostMind();
+window.setHour();
