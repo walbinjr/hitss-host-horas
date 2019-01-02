@@ -1,10 +1,18 @@
-var firstDay;
-document.querySelectorAll('a').forEach(function(el) { if (el.innerText === "1") firstDay = el; });
-firstDay.click();
+// Adiciona classes para dias de finais de semana, caso nao existam (bugfix)
+var list = document.querySelectorAll('.ui-datepicker-week-end a')
+for (var i = 0; i < list.length; ++i) {
+  list[i].classList.add('diaInhabil');
+  list[i].classList.add('ui-state-disabled');
+}
 
+// Define quais dias sao invalidos
 var diasInvalidos = [];
 document.querySelectorAll('.diaInhabil').forEach(function(el) { diasInvalidos.push(parseInt(el.text)); });
-// console.log('diasInvalidos', diasInvalidos);
+//console.log('diasInvalidos', diasInvalidos);
+
+// Seleciona o primeiro dia antes de comecar a preencher
+var firstDay = document.querySelector('.ui-datepicker-calendar a.ui-state-default:not(.diaInhabil)');
+firstDay.click();
 
 window.parseCurrentDate = function() {
   return document.querySelector('#lblFechaCaptura').innerHTML.split(/\s/);
@@ -20,7 +28,7 @@ window.jumpToNextDay = function() {
 window.isValidDay = function() {
   var rg = window.parseCurrentDate();
   var dayOfMonth = parseInt(rg[1]);
-  console.log('currentDate', rg);
+  // console.log('currentDate', rg);
   // console.log('dayOfMonth', dayOfMonth);
   var validDay = diasInvalidos.indexOf(dayOfMonth) == -1;
   return validDay;
