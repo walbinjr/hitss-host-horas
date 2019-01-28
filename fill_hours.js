@@ -1,8 +1,14 @@
 // Adiciona classes para dias de finais de semana, caso nao existam (bugfix)
-var list = document.querySelectorAll('.ui-datepicker-week-end a')
+var list = document.querySelectorAll('.ui-datepicker-calendar .ui-datepicker-week-end a')
 for (var i = 0; i < list.length; ++i) {
   list[i].classList.add('diaInhabil');
   list[i].classList.add('ui-state-disabled');
+}
+
+// Adiciona classes para dias desabilitados (bugfix)
+var list = document.querySelectorAll('.ui-datepicker-calendar a.ui-state-disabled')
+for (var i = 0; i < list.length; ++i) {
+  list[i].classList.add('diaInhabil');
 }
 
 // Define quais dias sao invalidos
@@ -13,6 +19,7 @@ document.querySelectorAll('.diaInhabil').forEach(function(el) { diasInvalidos.pu
 // Seleciona o primeiro dia antes de comecar a preencher
 var firstDay = document.querySelector('.ui-datepicker-calendar a.ui-state-default:not(.diaInhabil)');
 firstDay.click();
+//console.log('firstDay', firstDay);
 
 window.parseCurrentDate = function() {
   return document.querySelector('#lblFechaCaptura').innerHTML.split(/\s/);
@@ -66,4 +73,5 @@ window.startValidator = function() {
   }, 1000);
 };
 
-window.setHour();
+// Delay de 0,5 segundo
+window.setInterval(window.setHour(), 500);
