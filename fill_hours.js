@@ -14,12 +14,13 @@ for (var i = 0; i < list.length; ++i) {
 // Define quais dias sao invalidos
 var diasInvalidos = [];
 document.querySelectorAll('.diaInhabil').forEach(function(el) { diasInvalidos.push(parseInt(el.text)); });
-//console.log('diasInvalidos', diasInvalidos);
+document.querySelectorAll('.diaCapturado').forEach(function(el) { diasInvalidos.push(parseInt(el.text)); });
 
 // Seleciona o primeiro dia antes de comecar a preencher
 var firstDay = document.querySelector('.ui-datepicker-calendar a.ui-state-default:not(.diaInhabil)');
-firstDay.click();
-//console.log('firstDay', firstDay);
+if(firstDay) {
+  firstDay.click();
+}
 
 window.parseCurrentDate = function() {
   return document.querySelector('#lblFechaCaptura').innerHTML.split(/\s/);
@@ -35,8 +36,6 @@ window.jumpToNextDay = function() {
 window.isValidDay = function() {
   var rg = window.parseCurrentDate();
   var dayOfMonth = parseInt(rg[1]);
-  // console.log('currentDate', rg);
-  // console.log('dayOfMonth', dayOfMonth);
   var validDay = diasInvalidos.indexOf(dayOfMonth) == -1;
   return validDay;
 };
@@ -58,8 +57,6 @@ window.startValidator = function() {
     iterations++;
 
     var hasActivities = document.querySelector('#divActividadesCapturaActividades').querySelectorAll('tr.total').length > 0;
-    // console.log('hasActivities', hasActivities);
-    // console.log('validDay', window.isValidDay());
 
     if (hasActivities || !window.isValidDay()) {
       clearInterval(waiting);

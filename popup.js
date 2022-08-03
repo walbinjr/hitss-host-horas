@@ -1,3 +1,5 @@
+let dataInfo = {}
+
 function initialize() {
   document.querySelector('#activity').value = window.localStorage.activity;
   document.querySelector('#time').value = window.localStorage.time;
@@ -8,26 +10,35 @@ function saveInfo() {
   window.localStorage.activity = document.querySelector('#activity').value;
   window.localStorage.time = document.querySelector('#time').value;
   window.localStorage.comment = document.querySelector('#comment').value;
+
+  dataInfo.activity = window.localStorage.activity
+  dataInfo.time = window.localStorage.time
+  dataInfo.comment = window.localStorage.comment
 }
 
-function getCodeString() {
-  return "window.localStorage.activity = '" + window.localStorage.activity + "';"
-      + "window.localStorage.time = '" + window.localStorage.time + "';"
-      + "window.localStorage.comment = '" + window.localStorage.comment + "';";
+function setTabInfo(tabInfo) {
+  window.localStorage.activity = tabInfo.activity
+  window.localStorage.time = tabInfo.time
+  window.localStorage.comment = tabInfo.comment
 }
 
-function fillHours() {
+async function injectScript() {
   saveInfo();
 
-  chrome.tabs.executeScript({
-    code: getCodeString()
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: setTabInfo,
+    args: [dataInfo]
   });
 
-  chrome.tabs.executeScript({
-    file: 'fill_hours.js'
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    files: ['fill_hours.js']
   });
 }
 
-document.querySelector('#calc_button').addEventListener('click', fillHours);
+document.querySelector('#calc_button').addEventListener('click', injectScript);
 
 initialize();

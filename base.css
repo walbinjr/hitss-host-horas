@@ -37,3 +37,7 @@ body {
   display: none;
   text-align: center;
 }
+
+sup {
+  font-size: small;
+}
