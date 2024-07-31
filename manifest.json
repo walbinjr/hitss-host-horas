@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "HOST Lançar Horas",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lançamento de horas para o sistema HOST",
   "icons": {
   	"16": "host.png",
@@ -24,5 +24,8 @@
     "tabs",
     "activeTab",
     "scripting"
-  ]
+  ],
+  "content_security_policy": {
+    "script-src": "self"
+  }  
 }
