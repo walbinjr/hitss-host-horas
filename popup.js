@@ -41,7 +41,7 @@ async function injectScript() {
 
 function updateSubSelect() {
   const mainSelect = document.getElementById('project');
-  const subSelect = document.getElementById('subSelect');
+  const subSelect = document.getElementById('activity');
   subSelect.innerHTML = ''; // Clear existing options
 
   const optionsFor99999 = [
