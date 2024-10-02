@@ -43,3 +43,19 @@ chrome.tabs.onUpdated.addListener((tabId, change, tab) => {
 
 chrome.action.onClicked.addListener(checkURLHost);
 
+let pageData;
+
+// Ouvir mensagens do content script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'FROM_CONTENT') {
+    // Armazenar o valor de 'pageData' recebido
+    pageData = message.value;
+  }
+});
+
+// Função para enviar o valor de 'pageData' para o popup quando solicitado
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'REQUEST_PAGE_DATA') {
+    sendResponse({ value: pageData });
+  }
+});
