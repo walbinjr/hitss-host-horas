@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "HOST Lançar Horas",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lançamento de horas para o sistema HOST",
   "icons": {
   	"16": "host.png",
@@ -18,7 +18,7 @@
   },
   "web_accessible_resources" : [{
     "resources": ["fill_hours.js", "content.js", "injected.js", "background.js"],
-    "matches": ["<all_urls>"]
+    "matches": ["*://*.globalhitss.com/*"]
   }],
   "permissions": [
     "tabs",
@@ -30,7 +30,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["*://*.globalhitss.com/*"],
       "js": ["content.js"]
     }
   ]
