@@ -8,6 +8,8 @@ Extensão para Lançamento de horas para o sistema HOST (HITSS)
 
 ## Contribuidores
 
+[@gpolo3](https://github.com/gpolo3)
+
 [@botcoder](https://github.com/botcoder)
 
 [@hcordulino](https://github.com/hcordulino)
